@@ -23,8 +23,23 @@ class _Secreen1State extends State<Secreen1> {
   TextEditingController _cityTextEditControler = new TextEditingController();
   TextEditingController _speshialistTextEditControler =
       new TextEditingController();
+  GlobalKey<FormState> _DialogKey = GlobalKey();
   bool hidePass = true;
   Person person;
+
+  void _brandAlert() {
+    var alert = new AlertDialog(
+      content: Text('please fill all feaild'),
+      actions: <Widget>[
+        FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Cancel")),
+      ],
+    );
+    showDialog(context: context, builder: (_) => alert);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -249,19 +264,23 @@ class _Secreen1State extends State<Secreen1> {
                         color: Colors.blue.withOpacity(0.4),
                         elevation: 0.0,
                         child: MaterialButton(
-
                           onPressed: () {
                             person = new Person(
                                 _fullNameTextEditControler.text,
                                 _emailTextEditControler.text,
                                 _cityTextEditControler.text,
                                 _speshialistTextEditControler.text);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      Secreen2(person: person),
-                                ));
+                            if (_formKy.currentState.validate() && checkbox == true) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        Secreen2(person: person),
+                                  ));
+                            } else {
+                              _brandAlert();
+
+                            }
                           },
                           minWidth: MediaQuery.of(context).size.width,
                           child: Text(
